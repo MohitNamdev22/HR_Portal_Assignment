@@ -1,0 +1,723 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body styling */
+body {
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* Header styling (for both login and employees page) */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a73e8;
+    padding: 15px 20px;
+    color: #fff;
+}
+
+.header h2 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* App name on the right side of the header (for login page) */
+.app-name span {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* User info (for employees page header) */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-info span {
+    font-size: 16px;
+}
+
+.user-info a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.user-info a:hover {
+    text-decoration: underline;
+}
+
+/* Login container styling */
+.login-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-box {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-box h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.login-box p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Input group styling */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group .input-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #666;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 10px 10px 40px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #1a73e8;
+}
+
+.input-group .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #666;
+}
+
+/* Forgot password link */
+.forgot-password {
+    display: block;
+    text-align: right;
+    font-size: 14px;
+    color: #1a73e8;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Button styling (general) */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #1557b0;
+}
+
+/* Specific styles for edit and delete buttons */
+.edit-btn:hover {
+    background-color: transparent;
+}
+
+.delete-btn:hover {
+    background-color: transparent;
+}
+
+/* Message styling (for login error messages) */
+.message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #d32f2f;
+}
+
+/* Container for employees page */
+.container {
+    flex: 1;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Employee header (title and add button) */
+.employee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.employee-header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+/* Add Employee button */
+.add-employee-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: auto;
+    padding: 10px 15px;
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-employee-btn:hover {
+    background-color: #1557b0;
+}
+
+.plus-icon {
+    font-size: 14px;
+}
+
+/* Table wrapper for horizontal scrolling on mobile */
+.table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Employee table styling */
+#employeeTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    min-width: 600px; /* Ensure table is wide enough to require scrolling on mobile */
+}
+
+#employeeTable th,
+#employeeTable td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#employeeTable th {
+    background-color: #1a73e8;
+    color: #fff;
+    font-weight: bold;
+}
+
+#employeeTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#employeeTable tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+#employeeTable td {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Action buttons (Edit/Delete) */
+.action-btn {
+    width: auto;
+    padding: 5px 8px;
+    margin-right: 5px;
+    font-size: 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: none;
+}
+
+.edit-btn {
+    color: #1a73e8;
+}
+
+.edit-btn:hover {
+    color: #1557b0;
+}
+
+.delete-btn {
+    color: #d32f2f;
+}
+
+.delete-btn:hover {
+    color: #b71c1c;
+}
+
+/* Modal styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.modal.show {
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #666;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: #333;
+}
+
+.modal-content h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #1a73e8;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 12px;
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-content button:hover {
+    background-color: #1557b0;
+}
+
+/* Modal actions (for buttons in modals) */
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.modal-actions button {
+    width: auto;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.confirm-btn {
+    background-color: #1a73e8;
+    color: #fff;
+    border: none;
+}
+
+.confirm-btn:hover {
+    background-color: #1557b0;
+}
+
+#deleteConfirmModal .confirm-btn {
+    background-color: #d32f2f;
+    color: #fff;
+    border: none;
+}
+
+#deleteConfirmModal .confirm-btn:hover {
+    background-color: #b71c1c;
+}
+
+.cancel-btn {
+    background-color: #d32f2f;
+    color: #fff;
+    border: none;
+}
+
+.cancel-btn:hover {
+    background-color: #b71c1c;
+}
+
+/* Message modal styling */
+#messageModal.success #messageTitle {
+    color: #2e7d32;
+}
+
+#messageModal.error #messageTitle {
+    color: #d32f2f;
+}
+
+#messageModal p {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Loading animation (for future use) */
+.loading {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+.loading::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #1a73e8;
+    border-top: 4px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Fade-in animation for page load */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    padding: 10px;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Media Queries for Responsiveness */
+
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+    /* Header adjustments */
+    .header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 15px;
+    }
+
+    .header h2 {
+        font-size: 18px;
+    }
+
+    .app-name span {
+        font-size: 18px;
+    }
+
+    .user-info {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .user-info span,
+    .user-info a {
+        font-size: 14px;
+    }
+
+    /* Login page adjustments */
+    .login-box {
+        padding: 20px;
+        max-width: 90%;
+    }
+
+    .login-box h1 {
+        font-size: 20px;
+    }
+
+    .login-box p {
+        font-size: 12px;
+    }
+
+    .input-group input {
+        font-size: 12px;
+        padding: 8px 8px 8px 35px;
+    }
+
+    .input-group .input-icon,
+    .input-group .toggle-password {
+        font-size: 16px;
+    }
+
+    button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    /* Employee page adjustments */
+    .container {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .employee-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .employee-header h1 {
+        font-size: 20px;
+    }
+
+    .add-employee-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .plus-icon {
+        font-size: 12px;
+    }
+
+    /* Modal adjustments */
+    .modal-content {
+        margin: 5% auto;
+        padding: 15px;
+        max-width: 90%;
+    }
+
+    .modal-content h2 {
+        font-size: 18px;
+    }
+
+    .form-group input {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .modal-actions button {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    #messageModal p {
+        font-size: 14px;
+    }
+}
+
+/* Mobile devices (480px and below) */
+@media (max-width: 480px) {
+    /* Header adjustments */
+    .header {
+        padding: 8px 10px;
+    }
+
+    .header h2 {
+        font-size: 16px;
+    }
+
+    .app-name span {
+        font-size: 16px;
+    }
+
+    .user-info span,
+    .user-info a {
+        font-size: 12px;
+    }
+
+    /* Login page adjustments */
+    .login-box {
+        padding: 15px;
+        max-width: 95%;
+    }
+
+    .login-box h1 {
+        font-size: 18px;
+    }
+
+    .login-box p {
+        font-size: 11px;
+    }
+
+    .input-group input {
+        font-size: 11px;
+        padding: 6px 6px 6px 30px;
+    }
+
+    .input-group .input-icon,
+    .input-group .toggle-password {
+        font-size: 14px;
+    }
+
+    button {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    /* Employee page adjustments */
+    .container {
+        margin: 5px;
+        padding: 10px;
+    }
+
+    .employee-header h1 {
+        font-size: 18px;
+    }
+
+    .add-employee-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+
+    .plus-icon {
+        font-size: 11px;
+    }
+
+    /* Table adjustments */
+    #employeeTable th,
+    #employeeTable td {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    /* Action buttons */
+    .action-btn {
+        padding: 3px 6px;
+        font-size: 14px;
+    }
+
+    /* Modal adjustments */
+    .modal-content {
+        margin: 3% auto;
+        padding: 10px;
+        max-width: 95%;
+    }
+
+    .modal-content h2 {
+        font-size: 16px;
+    }
+
+    .form-group input {
+        font-size: 11px;
+        padding: 6px;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .modal-actions button {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+
+    #messageModal p {
+        font-size: 12px;
+    }
+
+    /* Footer adjustments */
+    footer {
+        font-size: 10px;
+        padding: 8px;
+    }
+}

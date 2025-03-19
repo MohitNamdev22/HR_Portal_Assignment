@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Employee Management</title>
+</head>
+<body>
+    <header class="header">
+        <h2>HR Portal</h2>
+        <div class="user-info">
+            <span id="hrEmail"></span>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </header>
+    <div class="container">
+        <div class="employee-header">
+            <h1>Employee Management</h1>
+            <button onclick="openAddModal()" class="add-employee-btn">
+                <span class="plus-icon"><i class="fa fa-plus"></i></span> Add Employee
+            </button>
+        </div>
+        <div class="table-wrapper">
+            <table id="employeeTable">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Email</th>
+                        <th>Salary</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Employee Modal -->
+    <div id="addEmployeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddModal()">×</span>
+            <h2>Add Employee</h2>
+            <form id="addEmployeeForm">
+                <div class="form-group">
+                    <label for="addName">Name</label>
+                    <input type="text" id="addName" placeholder="Enter name" required>
+                </div>
+                <div class="form-group">
+                    <label for="addDepartment">Department</label>
+                    <input type="text" id="addDepartment" placeholder="Enter department" required>
+                </div>
+                <div class="form-group">
+                    <label for="addEmail">Email</label>
+                    <input type="email" id="addEmail" placeholder="Enter email" required>
+                </div>
+                <div class="form-group">
+                    <label for="addSalary">Salary</label>
+                    <input type="number" id="addSalary" placeholder="Enter salary" required>
+                </div>
+                <button type="submit">Add Employee</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Employee Modal -->
+    <div id="editEmployeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">×</span>
+            <h2>Edit Employee</h2>
+            <form id="editEmployeeForm">
+                <input type="hidden" id="editId">
+                <div class="form-group">
+                    <label for="editName">Name</label>
+                    <input type="text" id="editName" placeholder="Enter name" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDepartment">Department</label>
+                    <input type="text" id="editDepartment" placeholder="Enter department" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email</label>
+                    <input type="email" id="editEmail" placeholder="Enter email" required>
+                </div>
+                <div class="form-group">
+                    <label for="editSalary">Salary</label>
+                    <input type="number" id="editSalary" placeholder="Enter salary" required>
+                </div>
+                <button type="submit">Update Employee</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteModal()">×</span>
+            <h2>Confirm Deletion</h2>
+            <p>Are you sure you want to delete this employee?</p>
+            <div class="modal-actions">
+                <button class="confirm-btn" onclick="confirmDelete()">Yes, Delete</button>
+                <button class="cancel-btn" onclick="closeDeleteModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Modal -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeMessageModal()">×</span>
+            <h2 id="messageTitle">Message</h2>
+            <p id="messageText"></p>
+            <div class="modal-actions">
+                <button class="confirm-btn" onclick="closeMessageModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (!sessionStorage.getItem('loggedIn')) window.location.href = 'index.html';
+
+        const hrEmail = sessionStorage.getItem('hrEmail');
+        const displayEmail = hrEmail ? hrEmail.split('@')[0] : 'User';
+        document.getElementById('hrEmail').textContent = displayEmail;
+
+        let employeeIdToDelete = null;
+
+        const fetchEmployees = async () => {
+            const response = await fetch('/api/employees', {
+                method: 'GET',
+            });
+            if (!response.ok) {
+                showMessage('Error', 'Failed to fetch employees.', 'error');
+                return;
+            }
+            const employees = await response.json();
+            const tbody = document.querySelector('#employeeTable tbody');
+            tbody.innerHTML = '';
+            employees.forEach(emp => {
+                const row = `<tr>
+                    <td>${emp.id}</td>
+                    <td>${emp.name}</td>
+                    <td>${emp.department}</td>
+                    <td>${emp.email}</td>
+                    <td>$${emp.salary.toLocaleString()}</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="openEditModal(${emp.id}, '${emp.name}', '${emp.department}', '${emp.email}', ${emp.salary})"><i class="fa fa-edit"></i></button>
+                        <button class="action-btn delete-btn" onclick="openDeleteModal(${emp.id})"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        };
+
+        const addModal = document.getElementById('addEmployeeModal');
+        const openAddModal = () => {
+            addModal.style.display = 'block';
+            setTimeout(() => addModal.classList.add('show'), 10);
+        };
+        const closeAddModal = () => {
+            addModal.classList.remove('show');
+            setTimeout(() => {
+                addModal.style.display = 'none';
+                document.getElementById('addEmployeeForm').reset();
+            }, 300);
+        };
+
+        document.getElementById('addEmployeeForm').onsubmit = async function (e) {
+            e.preventDefault();
+            const employee = {
+                name: document.getElementById('addName').value,
+                department: document.getElementById('addDepartment').value,
+                email: document.getElementById('addEmail').value,
+                salary: document.getElementById('addSalary').value
+            };
+            const response = await fetch('/api/employees', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(employee),
+            });
+            if (response.ok) {
+                showMessage('Success', 'Employee added successfully.', 'success');
+                closeAddModal();
+                fetchEmployees();
+            } else {
+                showMessage('Error', 'Failed to add employee.', 'error');
+            }
+        };
+
+        const editModal = document.getElementById('editEmployeeModal');
+        const openEditModal = (id, name, department, email, salary) => {
+            document.getElementById('editId').value = id;
+            document.getElementById('editName').value = name;
+            document.getElementById('editDepartment').value = department;
+            document.getElementById('editEmail').value = email;
+            document.getElementById('editSalary').value = salary;
+            editModal.style.display = 'block';
+            setTimeout(() => editModal.classList.add('show'), 10);
+        };
+        const closeEditModal = () => {
+            editModal.classList.remove('show');
+            setTimeout(() => {
+                editModal.style.display = 'none';
+                document.getElementById('editEmployeeForm').reset();
+            }, 300);
+        };
+
+        document.getElementById('editEmployeeForm').onsubmit = async function (e) {
+            e.preventDefault();
+            const id = document.getElementById('editId').value;
+            const employee = {
+                name: document.getElementById('editName').value,
+                department: document.getElementById('editDepartment').value,
+                email: document.getElementById('editEmail').value,
+                salary: document.getElementById('editSalary').value
+            };
+            const response = await fetch(`/api/employees/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(employee)
+            });
+            if (response.ok) {
+                showMessage('Success', 'Employee updated successfully.', 'success');
+                closeEditModal();
+                fetchEmployees();
+            } else {
+                showMessage('Error', 'Failed to update employee.', 'error');
+            }
+        };
+
+        const deleteModal = document.getElementById('deleteConfirmModal');
+        const openDeleteModal = (id) => {
+            employeeIdToDelete = id;
+            deleteModal.style.display = 'block';
+            setTimeout(() => deleteModal.classList.add('show'), 10);
+        };
+        const closeDeleteModal = () => {
+            deleteModal.classList.remove('show');
+            setTimeout(() => {
+                deleteModal.style.display = 'none';
+                employeeIdToDelete = null;
+            }, 300);
+        };
+        const confirmDelete = async () => {
+            if (employeeIdToDelete) {
+                const response = await fetch(`/api/employees/${employeeIdToDelete}`, { method: 'DELETE' });
+                if (response.ok) {
+                    showMessage('Success', 'Employee deleted successfully.', 'success');
+                    fetchEmployees();
+                } else {
+                    showMessage('Error', 'Failed to delete employee.', 'error');
+                }
+                closeDeleteModal();
+            }
+        };
+
+        const messageModal = document.getElementById('messageModal');
+        const showMessage = (title, text, type) => {
+            document.getElementById('messageTitle').textContent = title;
+            document.getElementById('messageText').textContent = text;
+            messageModal.classList.remove('success', 'error');
+            messageModal.classList.add(type);
+            messageModal.style.display = 'block';
+            setTimeout(() => messageModal.classList.add('show'), 10);
+        };
+        const closeMessageModal = () => {
+            messageModal.classList.remove('show');
+            setTimeout(() => {
+                messageModal.style.display = 'none';
+            }, 300);
+        };
+
+        const logout = () => {
+            sessionStorage.removeItem('loggedIn');
+            sessionStorage.removeItem('hrEmail');
+            window.location.href = 'index.html';
+        };
+
+        window.onclick = function (event) {
+            if (event.target == addModal) {
+                closeAddModal();
+            }
+            if (event.target == editModal) {
+                closeEditModal();
+            }
+            if (event.target == deleteModal) {
+                closeDeleteModal();
+            }
+            if (event.target == messageModal) {
+                closeMessageModal();
+            }
+        };
+
+        fetchEmployees();
+    </script>
+</body>
+</html>
