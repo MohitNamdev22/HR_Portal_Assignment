@@ -33,6 +33,10 @@
     </div>
 
     <script>
+        if (sessionStorage.getItem('loggedIn')) {
+            window.location.href = 'employees.html';
+        }
+
         document.getElementById('loginForm').onsubmit = async function (e) {
             e.preventDefault();
             const email = document.getElementById('email').value;
