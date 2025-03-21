@@ -274,11 +274,15 @@
             }, 300);
         };
 
-        const logout = () => {
-            sessionStorage.removeItem('loggedIn');
-            sessionStorage.removeItem('hrEmail');
-            window.location.href = 'index.html';
-        };
+        const logout = async () => {
+    await fetch('/api/auth/logout', {
+        method: 'GET',
+        credentials: 'include',
+    });
+    sessionStorage.removeItem('loggedIn');
+    sessionStorage.removeItem('hrEmail');
+    window.location.href = 'index.html';
+};
 
         window.onclick = function (event) {
             if (event.target == addModal) {
