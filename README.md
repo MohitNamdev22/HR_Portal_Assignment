@@ -2,25 +2,6 @@
 
 A Spring Boot application for managing employees in an HR portal, with session-based authentication. This project uses a centralized NeonDB PostgreSQL database, meaning all users will connect to the same database, and changes made by any user (e.g., adding, updating, or deleting employees) will be reflected for all users. The frontend is served directly from the backend at `http://localhost:8080/index.html`.
 
-## Table of Contents
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Setup Instructions](#setup-instructions)
-  - [1. Clone the Repository](#1-clone-the-repository)
-  - [2. Install Prerequisites](#2-install-prerequisites)
-  - [3. Set Up Database Credentials](#3-set-up-database-credentials)
-  - [4. Run the Application](#4-run-the-application)
-  - [5. Access the Application](#5-access-the-application)
-- [Usage](#usage)
-  - [Logging In](#logging-in)
-  - [Managing Employees](#managing-employees)
-  - [Logging Out](#logging-out)
-- [Project Structure](#project-structure)
-- [Notes](#notes)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Features
 - **Session-Based Authentication**: Users (HR personnel) can log in and log out using email and password.
 - **Employee Management**: CRUD operations for employees (Create, Read, Update, Delete).
